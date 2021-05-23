@@ -17,7 +17,7 @@ links = []
 for li in all_industries:
     lin = f'https://www.dnb.com/{li}'
     links.append(lin)
-
+print(2)
 lists = []
 data = {} 
 #-------------------------------------Agriculture & forestry industry--------------------------------------------------
