@@ -23,9 +23,11 @@ data = {}
 #-------------------------------------Agriculture & forestry industry--------------------------------------------------
 agriculture_foresty = links[:15] #15
 for ag_for in agriculture_foresty:
+    print(ag_for)
+    print(2)
     r = requests.get(ag_for, headers = headers)
     soup = bs(r.content, 'html.parser')
-    print(2)
+    
     reg_links = []
     regions = [x.find('a')['href'] for x in soup.findAll('div',attrs = {'class':'col-md-6 col-xs-6 data'})]
     region_company_num = [int((int(x.text.strip().replace(',','').replace('(','').replace(')',''))/50)+2) for x in soup.findAll('span',attrs = {'class':'number-countries'})]
