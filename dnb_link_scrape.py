@@ -13,6 +13,7 @@ soup = bs(r.content, 'html.parser')
 print(1)
 all_industries = [x.find('a')['href'] for x in soup.findAll('div',attrs = {'class':'col-md-6 col-xs-6 link'})]
 print(2)
+print(all_industries)
 links = []
 for li in all_industries:
     lin = f'https://www.dnb.com/{li}'
