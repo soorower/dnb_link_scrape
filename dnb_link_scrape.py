@@ -33,9 +33,10 @@ for ag_for in agriculture_foresty:
         lin = f'https://www.dnb.com/{reg}'
         reg_links.append(lin)
     
-    for region in reg_links: #finland
-        for i in range(1,region_company_num):
+    for region,k in zip(reg_links,region_company_num): 
+        for i in range(1,k):
             new_link = region[:-1] + str(i)
+            print(new_link)
             r = requests.get(new_link, headers = headers)
             soup = bs(r.content, 'html.parser')
             
@@ -43,7 +44,6 @@ for ag_for in agriculture_foresty:
             ultimate_comanies = []
             for li in ultimate_comanies1:
                 lin = f'https://www.dnb.com/{li}'
-                print(lin)
                 data = {
                     'company url': lin
                 }
