@@ -12,19 +12,18 @@ r = requests.get(url, headers = headers)
 soup = bs(r.content, 'html.parser')
 print(1)
 all_industries = [x.find('a')['href'] for x in soup.findAll('div',attrs = {'class':'col-md-6 col-xs-6 link'})]
+print(2)
 links = []
 for li in all_industries:
     lin = f'https://www.dnb.com/{li}'
     links.append(lin)
 
-    
 lists = []
 data = {} 
 #-------------------------------------Agriculture & forestry industry--------------------------------------------------
 agriculture_foresty = links[:15] #15
 for ag_for in agriculture_foresty:
     print(ag_for)
-    print(2)
     r = requests.get(ag_for, headers = headers)
     soup = bs(r.content, 'html.parser')
     
