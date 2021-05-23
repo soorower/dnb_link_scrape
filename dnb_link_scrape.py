@@ -10,10 +10,9 @@ headers = {
 url = 'https://www.dnb.com/business-directory.html'
 r = requests.get(url, headers = headers)
 soup = bs(r.content, 'html.parser')
-print(1)
+print(soup)
 all_industries = [x.find('a')['href'] for x in soup.findAll('div',attrs = {'class':'col-md-6 col-xs-6 link'})]
 print(2)
-print(all_industries)
 links = []
 for li in all_industries:
     lin = f'https://www.dnb.com/{li}'
@@ -24,7 +23,6 @@ data = {}
 #-------------------------------------Agriculture & forestry industry--------------------------------------------------
 agriculture_foresty = links[:15] #15
 for ag_for in agriculture_foresty:
-    print(ag_for)
     r = requests.get(ag_for, headers = headers)
     soup = bs(r.content, 'html.parser')
     
@@ -34,14 +32,12 @@ for ag_for in agriculture_foresty:
     for reg in regions:
         lin = f'https://www.dnb.com/{reg}'
         reg_links.append(lin)
-    print(3)
     for region,k in zip(reg_links,region_company_num): 
         for i in range(1,k):
             new_link = region[:-1] + str(i)
             print(new_link)
             r = requests.get(new_link, headers = headers)
             soup = bs(r.content, 'html.parser')
-            print(4)
             ultimate_comanies1 = [x.find('div').find('a')['href'] for x in soup.findAll('div',attrs = {'class':'col-md-12 data'})]
             ultimate_comanies = []
             for li in ultimate_comanies1:
