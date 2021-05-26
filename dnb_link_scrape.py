@@ -1,59 +1,99 @@
 import requests
-import pandas as pd
-from bs4 import BeautifulSoup as bs
-from discord_webhook import DiscordWebhook, DiscordEmbed
-webhook = DiscordWebhook(
-    url='https://discord.com/api/webhooks/840041328401842187/Hsw4Ih0CgCUtoIj4DHORY_-UZ_PLIwd9wyJxPntKPkgKkTIIdPWltYTHsgz35PlAiRJt', username="Yahoo Finance For Fiverr")
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.72 Safari/537.36'
 }
-url = 'https://www.dnb.com/business-directory.html'
-r = requests.get(url, headers = headers)
-soup = bs(r.content, 'html.parser')
-print(soup)
-all_industries = [x.find('a')['href'] for x in soup.findAll('div',attrs = {'class':'col-md-6 col-xs-6 link'})]
-print(2)
-links = []
-for li in all_industries:
-    lin = f'https://www.dnb.com/{li}'
-    links.append(lin)
-print(2)
-lists = []
-data = {} 
-#-------------------------------------Agriculture & forestry industry--------------------------------------------------
-agriculture_foresty = links[:15] #15
-for ag_for in agriculture_foresty:
-    r = requests.get(ag_for, headers = headers)
-    soup = bs(r.content, 'html.parser')
+r = requests.get('https://www.ssense.com/en-us/men/product/nike/orange-overbreak-sp-sneakers/8049691',headers = headers)
+print(r.status_code)
+
+import requests
+import json
+
+url = "https://api.bigcommerce.com/stores/lkdb4vv2gy/v3/catalog/products/16790"
+
+
+# payload = {
+#   "name": "Nike. Orange Overbreak SP Sneaker",
+#   "brand_id": 1,
+#   "categories": "['Men Footware']",
+#   "price": "190",
+#   "description": "Supplier color: Pollen rise/Neptune green. Upper: textile, synthetic. Sole: rubber. Low-top paneled mesh and faux-suede sneakers in orange. Round rubber cap toe in black. Lace-up closure in tones of orange and grey. Textile logo patch at tongue. Padded collar. Loog printed in orange at green buffed faux-leather heel tab. Buffed faux-leather Swoosh appliqués in green at sides. Textured React® foam rubber sole in black and gradient tones of beige. Approx 2'' platform. ",
+#   "sku":"211011M237224",
+#   "weight": 4,
+#   "type": "physical",
+#   "variants": [
+#     {
+#       "sku": "Nike-orange-8-41",
+#       "option_values": [
+#         {
+#           "option_display_name": "Size",
+#           "label": "US-8 = IT-41"
+#         }
+#       ]
+#     },
+#     {
+#       "sku": "Nike-orange-8.5-41.5",
+#       "option_values": [
+#         {
+#           "option_display_name": "Size",
+#           "label": "US-8.5 = IT-41.5"
+#         }
+#       ]
+#     },
+#     {
+#       "sku": "Nike-orange-9.5-42.5",
+#       "option_values": [
+#         {
+#           "option_display_name": "Size",
+#           "label": "US-9.5 = IT-42.5"
+#         }
+#       ]
+#     },
+#     {
+#       "sku": "Nike-orange-12-45",
+#       "option_values": [
+#         {
+#           "option_display_name": "Size",
+#           "label": "US-12 = IT-45"
+#         }
+#       ]
+#     }
+      
+#   ],
+#   "images": [{
+#       "is_thumbnail": True,
+#       "sort_order": 1,
+#       "description": "NIKE Orage Sneaker Image 1",
+#       "image_url": "https://img.ssensemedia.com/images/b_white,g_center,f_auto,q_auto:best/211011M237224_1/nike-orange-overbreak-sp-sneakers.jpg"
+#      },
+      
+#       {
+#       "is_thumbnail": False,
+#       "sort_order": 2,
+#       "description": "NIKE Orage Sneaker Image 1",
+#       "image_url": "https://img.ssensemedia.com/images/b_white,c_lpad,g_center,h_1412,w_940/c_scale,h_960/f_auto,dpr_1.3/211011M237224_2/nike-orange-overbreak-sp-sneakers.jpg"
+#      },
+#       {
+#       "is_thumbnail": False,
+#       "sort_order": 3,
+#       "description": "NIKE Orage Sneaker Image 1",
+#       "image_url": "https://img.ssensemedia.com/images/b_white,c_lpad,g_center,h_1412,w_940/c_scale,h_960/f_auto,dpr_1.3/211011M237224_5/nike-orange-overbreak-sp-sneakers.jpg"
+#      }
+#   ]
+# }
+payload = {
+    "name": "Nike. Orange Overbreak SP Sneker",
+    "price":200
     
-    reg_links = []
-    regions = [x.find('a')['href'] for x in soup.findAll('div',attrs = {'class':'col-md-6 col-xs-6 data'})]
-    region_company_num = [int((int(x.text.strip().replace(',','').replace('(','').replace(')',''))/50)+2) for x in soup.findAll('span',attrs = {'class':'number-countries'})]
-    for reg in regions:
-        lin = f'https://www.dnb.com/{reg}'
-        reg_links.append(lin)
-    for region,k in zip(reg_links,region_company_num): 
-        for i in range(1,k):
-            new_link = region[:-1] + str(i)
-            print(new_link)
-            r = requests.get(new_link, headers = headers)
-            soup = bs(r.content, 'html.parser')
-            ultimate_comanies1 = [x.find('div').find('a')['href'] for x in soup.findAll('div',attrs = {'class':'col-md-12 data'})]
-            ultimate_comanies = []
-            for li in ultimate_comanies1:
-                lin = f'https://www.dnb.com/{li}'                
-                data = {
-                    'company url': lin
-                }
-                lists.append(data)
-        
+}
 
-df = pd.DataFrame(lists).drop_duplicates(subset=['company url'], keep='first').reset_index(drop=True)
-df.to_csv('dnb_agriculture_and_forestry.csv',encoding = 'utf-8',index=False)
+headers = {
+    'content-type': "application/json",
+    'accept': "application/json",
+    'x-auth-token': "nw680dqzdka5sl2n5ui9ps3p1nlxana"
+    }
+
+response = requests.put(url, data=json.dumps(payload), headers=headers)
+
+print(response.text)
 
 
-embed = DiscordEmbed(title='Dnb all links', description='agriculture and forestry' )
-with open('dnb_agriculture_and_forestry.csv', "rb") as f:
-    webhook.add_file(file=f.read(), filename='dnb_agriculture_and_forestry.csv')
-webhook.add_embed(embed)
-response = webhook.execute()
